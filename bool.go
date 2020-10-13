@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-//NullBool is a wrapper around bool
+// NullBool is a wrapper around bool
 type NullBool struct {
 	Bool  bool
 	Valid bool
@@ -16,8 +16,8 @@ func Bool(Bool bool) NullBool {
 	return NullBool{Bool, true}
 }
 
-//MarshalJSON method is called by json.Marshal,
-//whenever it is of type NullBool
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullBool
 func (x *NullBool) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -25,8 +25,8 @@ func (x *NullBool) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Bool)
 }
 
-//UnmarshalJSON method is called by json.Unmarshal,
-//whenever it is of type NullBool
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullBool
 func (this NullBool) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Bool)
 	if err != nil {

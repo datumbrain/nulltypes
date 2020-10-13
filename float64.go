@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-//NullFloat64 is a wrapper around float64
+// NullFloat64 is a wrapper around float64
 type NullFloat64 struct {
 	Float64 float64
 	Valid   bool
@@ -16,8 +16,8 @@ func Float64(Float64 float64) NullFloat64 {
 	return NullFloat64{Float64, true}
 }
 
-//MarshalJSON method is called by json.Marshal,
-//whenever it is of type NullFloat64
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullFloat64
 func (x *NullFloat64) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -25,8 +25,8 @@ func (x *NullFloat64) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Float64)
 }
 
-//UnmarshalJSON method is called by json.Unmarshal,
-//whenever it is of type NullFloat64
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullFloat64
 func (this NullFloat64) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Float64)
 	if err != nil {

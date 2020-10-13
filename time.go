@@ -14,7 +14,7 @@ var TruncateOff = time.Microsecond
 // default UTC
 var DatabaseLocation, _ = time.LoadLocation("UTC")
 
-//NullTime is a wrapper around time.Time
+// NullTime is a wrapper around time.Time
 type NullTime struct {
 	Time  time.Time
 	Valid bool `default:"false"`
@@ -60,8 +60,8 @@ func format(t time.Time) time.Time {
 	return t.In(DatabaseLocation).Truncate(TruncateOff)
 }
 
-//MarshalJSON method is called by json.Marshal,
-//whenever it is of type NullTime
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullTime
 func (x *NullTime) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -69,8 +69,8 @@ func (x *NullTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Time)
 }
 
-//UnmarshalJSON method is called by json.Unmarshal,
-//whenever it is of type NullTime
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullTime
 func (this NullTime) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Time)
 	if err != nil {

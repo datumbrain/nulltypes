@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-//NullString is a wrapper around string
+// NullString is a wrapper around string
 type NullString struct {
 	String string
 	Valid  bool
@@ -16,8 +16,8 @@ func String(String string) NullString {
 	return NullString{String, true}
 }
 
-//MarshalJSON method is called by json.Marshal,
-//whenever it is of type NullString
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullString
 func (x *NullString) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -25,8 +25,8 @@ func (x *NullString) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.String)
 }
 
-//UnmarshalJSON method is called by json.Unmarshal,
-//whenever it is of type NullString
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullString
 func (this NullString) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.String)
 	if err != nil {

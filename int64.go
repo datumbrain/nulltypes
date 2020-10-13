@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-//NullInt64 is a wrapper around int64
+// NullInt64 is a wrapper around int64
 type NullInt64 struct {
 	Int64 int64
 	Valid bool
@@ -16,8 +16,8 @@ func Int64(Int64 int64) NullInt64 {
 	return NullInt64{Int64, true}
 }
 
-//MarshalJSON method is called by json.Marshal,
-//whenever it is of type NullInt64
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullInt64
 func (x *NullInt64) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -25,8 +25,8 @@ func (x *NullInt64) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Int64)
 }
 
-//UnmarshalJSON method is called by json.Unmarshal,
-//whenever it is of type NullInt64
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullInt64
 func (this NullInt64) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Int64)
 	if err != nil {

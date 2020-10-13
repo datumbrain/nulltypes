@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-//NullInt32 is a wrapper around int32
+// NullInt32 is a wrapper around int32
 type NullInt32 struct {
 	Int32 int32
 	Valid bool
@@ -16,8 +16,8 @@ func Int32(Int32 int32) NullInt32 {
 	return NullInt32{Int32, true}
 }
 
-//MarshalJSON method is called by json.Marshal,
-//whenever it is of type NullInt32
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullInt32
 func (x *NullInt32) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -25,8 +25,8 @@ func (x *NullInt32) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Int32)
 }
 
-//UnmarshalJSON method is called by json.Unmarshal,
-//whenever it is of type NullInt32
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullInt32
 func (this NullInt32) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Int32)
 	if err != nil {
