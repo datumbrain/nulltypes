@@ -25,6 +25,17 @@ func (x *NullInt64) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Int64)
 }
 
+//UnmarshalJSON method is called by json.Unmarshal,
+//whenever it is of type NullInt64
+func (this NullInt64) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &this.Int64)
+	if err != nil {
+		return err
+	}
+	this.Valid = true
+	return nil
+}
+
 // satisfy the sql.scanner interface
 func (x *NullInt64) Scan(value interface{}) error {
 	rt, ok := value.(int64)

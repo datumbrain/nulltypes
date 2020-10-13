@@ -25,6 +25,17 @@ func (x *NullBool) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Bool)
 }
 
+//UnmarshalJSON method is called by json.Unmarshal,
+//whenever it is of type NullBool
+func (this NullBool) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &this.Bool)
+	if err != nil {
+		return err
+	}
+	this.Valid = true
+	return nil
+}
+
 // satisfy the sql.scanner interface
 func (x *NullBool) Scan(value interface{}) error {
 	rt, ok := value.(bool)

@@ -68,3 +68,15 @@ func (x *NullTime) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(x.Time)
 }
+
+//UnmarshalJSON method is called by json.Unmarshal,
+//whenever it is of type NullTime
+func (this NullTime) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &this.Time)
+	if err != nil {
+		return err
+	}
+	this.Time = format(this.Time)
+	this.Valid = true
+	return nil
+}
