@@ -1,5 +1,7 @@
 # nulltypes
 
+<img src="https://github.com/ashleymcnamara/gophers/raw/master/MovingGopher.png" width="120">
+
 `nulltypes` define JSON marshalling and unmarshalling for null SQL types. 
 
 ## Usage
