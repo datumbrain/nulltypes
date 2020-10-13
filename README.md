@@ -2,17 +2,48 @@
 
 <img src="https://github.com/ashleymcnamara/gophers/raw/master/MovingGopher.png" width="120">
 
-`nulltypes` define JSON marshalling and unmarshalling for null SQL types. 
+---
+
+`nulltypes` is a golang module that provides an alternative to nullable data types from `database/sql` with proper JSON marshalling and unmarshalling.
+
+It also provides a wrapper for `time.Time` to format time to use with `timestamp` of SQL databases, i.e. `mysql`, `postgres`.
+
+The default database time zone is set to `UTC`, but it can easily be changed with:
+```
+nulltypes.DatabaseLocation, _ = time.LoadLocation([YOUR_TIME_ZONE])
+```
+
+## Import
+
+```
+import "github.com/datumbrain/nulltypes"
+```
 
 ## Usage
+Here is an example usage with *GORM*.
+```go
+package models
 
-Import 
-
+type User struct {
+	ID              uint `gorm:"primary_key"`
+	Name            string
+	Address         nulltypes.NullString
+	CreationDate    time.Time `gorm:"autoCreateTime;default:current_timestamp"`
+	UpdationDate    nulltypes.NullTime
+	TerminationDate nulltypes.NullTime
+	ManagerID       nulltypes.NullInt64 `gorm:"OnUpdate:CASCADE,OnDelete:SET NULL"`
+}
 ```
-import "github.com/datumbrain/nulltypes
+```go
+user := User{
+		ID:           0,
+		Name:         "John Doe",
+		Address:      nulltypes.String("221B Baker Street"),
+		CreationDate: time.Now(),
+		UpdationDate: nulltypes.Now(),
+		ManagerID:    nulltypes.Int64(5),
+	}
 ```
-
-And use it in your GORM models.
 
 ## Author
 
