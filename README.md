@@ -9,7 +9,7 @@
 Import 
 
 ```
-import "github.com/datumbrain/nulltypes
+import "github.com/datumbrain/nulltypes"
 ```
 
 And use it in your GORM models.
