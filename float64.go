@@ -18,39 +18,44 @@ func Float64(Float64 float64) NullFloat64 {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullFloat64
-func (x NullFloat64) MarshalJSON() ([]byte, error) {
-	if !x.Valid {
-		return []byte("null"), nil
+func (nf NullFloat64) MarshalJSON() ([]byte, error) {
+	if !nf.Valid {
+		return json.Marshal(nil)
 	}
-	return json.Marshal(x.Float64)
+	return json.Marshal(nf.Float64)
 }
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullFloat64
-func (this *NullFloat64) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &this.Float64)
-	if err != nil {
+func (nf *NullFloat64) UnmarshalJSON(b []byte) error {
+	var f *float64
+	if err := json.Unmarshal(b, &f); err != nil {
 		return err
 	}
-	this.Valid = true
-	return nil
-}
-
-// satisfy the sql.scanner floaterface
-func (x *NullFloat64) Scan(value interface{}) error {
-	rt, ok := value.(float64)
-	if ok {
-		*x = NullFloat64{rt, true}
+	if f != nil {
+		nf.Valid = true
+		nf.Float64 = *f
 	} else {
-		*x = NullFloat64{rt, false}
+		nf.Valid = false
 	}
 	return nil
 }
 
-// satifies the driver.Value interface
-func (x NullFloat64) Value() (driver.Value, error) {
-	if x.Valid {
-		return x.Float64, nil
+// Scan satisfies the sql.scanner floaterface
+func (nf *NullFloat64) Scan(value interface{}) error {
+	rt, ok := value.(float64)
+	if ok {
+		*nf = NullFloat64{rt, true}
+	} else {
+		*nf = NullFloat64{rt, false}
+	}
+	return nil
+}
+
+// Value satifies the driver.Value interface
+func (nf NullFloat64) Value() (driver.Value, error) {
+	if nf.Valid {
+		return nf.Float64, nil
 	}
 	return nil, nil
 }

@@ -18,39 +18,44 @@ func Int32(Int32 int32) NullInt32 {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullInt32
-func (x NullInt32) MarshalJSON() ([]byte, error) {
-	if !x.Valid {
-		return []byte("null"), nil
+func (ni NullInt32) MarshalJSON() ([]byte, error) {
+	if !ni.Valid {
+		return json.Marshal(nil)
 	}
-	return json.Marshal(x.Int32)
+	return json.Marshal(ni.Int32)
 }
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullInt32
-func (this *NullInt32) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &this.Int32)
-	if err != nil {
+func (ni *NullInt32) UnmarshalJSON(b []byte) error {
+	var i *int32
+	if err := json.Unmarshal(b, &i); err != nil {
 		return err
 	}
-	this.Valid = true
-	return nil
-}
-
-// satisfy the sql.scanner interface
-func (x *NullInt32) Scan(value interface{}) error {
-	rt, ok := value.(int32)
-	if ok {
-		*x = NullInt32{rt, true}
+	if i != nil {
+		ni.Valid = true
+		ni.Int32 = *i
 	} else {
-		*x = NullInt32{rt, false}
+		ni.Valid = false
 	}
 	return nil
 }
 
-// satifies the driver.Value interface
-func (x NullInt32) Value() (driver.Value, error) {
-	if x.Valid {
-		return x.Int32, nil
+// Scan satisfies the sql.scanner interface
+func (ni *NullInt32) Scan(value interface{}) error {
+	rt, ok := value.(int32)
+	if ok {
+		*ni = NullInt32{rt, true}
+	} else {
+		*ni = NullInt32{rt, false}
+	}
+	return nil
+}
+
+// Value satifies the driver.Value interface
+func (ni NullInt32) Value() (driver.Value, error) {
+	if ni.Valid {
+		return ni.Int32, nil
 	}
 	return nil, nil
 }

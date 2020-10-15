@@ -23,7 +23,7 @@ func String(s string) NullString {
 // whenever it is of type NullString
 func (ns NullString) MarshalJSON() ([]byte, error) {
 	if !ns.Valid {
-		return []byte("null"), nil
+		return json.Marshal(nil)
 	}
 	return json.Marshal(ns.String)
 }
@@ -31,11 +31,16 @@ func (ns NullString) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullString
 func (ns *NullString) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &ns.String)
-	if err != nil {
+	var s *string
+	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	ns.Valid = true
+	if s != nil {
+		ns.Valid = true
+		ns.String = *s
+	} else {
+		ns.Valid = false
+	}
 	return nil
 }
 

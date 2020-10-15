@@ -18,39 +18,44 @@ func Bool(Bool bool) NullBool {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullBool
-func (x NullBool) MarshalJSON() ([]byte, error) {
-	if !x.Valid {
-		return []byte("null"), nil
+func (nb NullBool) MarshalJSON() ([]byte, error) {
+	if !nb.Valid {
+		return json.Marshal(nil)
 	}
-	return json.Marshal(x.Bool)
+	return json.Marshal(nb.Bool)
 }
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullBool
-func (this *NullBool) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &this.Bool)
-	if err != nil {
+func (nb *NullBool) UnmarshalJSON(b []byte) error {
+	var boo *bool
+	if err := json.Unmarshal(b, &boo); err != nil {
 		return err
 	}
-	this.Valid = true
-	return nil
-}
-
-// satisfy the sql.scanner interface
-func (x *NullBool) Scan(value interface{}) error {
-	rt, ok := value.(bool)
-	if ok {
-		*x = NullBool{rt, true}
+	if boo != nil {
+		nb.Valid = true
+		nb.Bool = *boo
 	} else {
-		*x = NullBool{rt, false}
+		nb.Valid = false
 	}
 	return nil
 }
 
-// satifies the driver.Value interface
-func (x NullBool) Value() (driver.Value, error) {
-	if x.Valid {
-		return x.Bool, nil
+// Scan satisfies the sql.scanner interface
+func (nb *NullBool) Scan(value interface{}) error {
+	rt, ok := value.(bool)
+	if ok {
+		*nb = NullBool{rt, true}
+	} else {
+		*nb = NullBool{rt, false}
+	}
+	return nil
+}
+
+// Value satifies the driver.Value interface
+func (nb NullBool) Value() (driver.Value, error) {
+	if nb.Valid {
+		return nb.Bool, nil
 	}
 	return nil, nil
 }
