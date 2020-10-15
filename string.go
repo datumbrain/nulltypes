@@ -12,45 +12,48 @@ type NullString struct {
 }
 
 // String method to get NullString object from string
-func String(String string) NullString {
-	return NullString{String, true}
+func String(s string) NullString {
+	return NullString{
+		String: s,
+		Valid:  true,
+	}
 }
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullString
-func (x NullString) MarshalJSON() ([]byte, error) {
-	if !x.Valid {
+func (ns NullString) MarshalJSON() ([]byte, error) {
+	if !ns.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(x.String)
+	return json.Marshal(ns.String)
 }
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullString
-func (this *NullString) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &this.String)
+func (ns *NullString) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &ns.String)
 	if err != nil {
 		return err
 	}
-	this.Valid = true
+	ns.Valid = true
 	return nil
 }
 
-// satisfy the sql.scanner interface
-func (x *NullString) Scan(value interface{}) error {
+// Scan satisfies the sql.scanner interface
+func (ns *NullString) Scan(value interface{}) error {
 	rt, ok := value.(string)
 	if ok {
-		*x = NullString{rt, true}
+		*ns = NullString{rt, true}
 	} else {
-		*x = NullString{"", false}
+		*ns = NullString{"", false}
 	}
 	return nil
 }
 
-// satifies the driver.Value interface
-func (x NullString) Value() (driver.Value, error) {
-	if x.Valid {
-		return x.String, nil
+// Value satifies the driver.Value interface
+func (ns NullString) Value() (driver.Value, error) {
+	if ns.Valid {
+		return ns.String, nil
 	}
 	return nil, nil
 }
