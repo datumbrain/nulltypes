@@ -18,7 +18,7 @@ func String(String string) NullString {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullString
-func (x *NullString) MarshalJSON() ([]byte, error) {
+func (x NullString) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
 	}
@@ -27,7 +27,7 @@ func (x *NullString) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullString
-func (this NullString) UnmarshalJSON(b []byte) error {
+func (this *NullString) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.String)
 	if err != nil {
 		return err
