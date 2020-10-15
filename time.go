@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-// the degree of precision to REMOVE
+// TruncateOff the degree of precision to REMOVE
 // Default time.Microsecond
 var TruncateOff = time.Microsecond
 
-// Local the timezone the database is set to
-// default UTC
+// DatabaseLocation is local the timezone
+// the database is set to default UTC
 var DatabaseLocation, _ = time.LoadLocation("UTC")
 
 // NullTime is a wrapper around time.Time
@@ -27,43 +27,47 @@ func Time(Time time.Time) NullTime {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullTime
-func (x NullTime) MarshalJSON() ([]byte, error) {
-	if !x.Valid {
-		return []byte("null"), nil
+func (nt NullTime) MarshalJSON() ([]byte, error) {
+	if !nt.Valid {
+		return json.Marshal(nil)
 	}
-	return json.Marshal(x.Time)
+	return json.Marshal(nt.Time)
 }
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullTime
-func (this *NullTime) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &this.Time)
-	if err != nil {
+func (nt *NullTime) UnmarshalJSON(b []byte) error {
+	var t *time.Time
+	if err := json.Unmarshal(b, &t); err != nil {
 		return err
 	}
-	this.Time = format(this.Time)
-	this.Valid = true
+	if t != nil {
+		nt.Valid = true
+		nt.Time = *t
+	} else {
+		nt.Valid = false
+	}
 	return nil
 }
 
-// satisfy the sql.scanner interface
-func (t *NullTime) Scan(value interface{}) error {
+// Scan satisfies the sql.scanner interface
+func (nt *NullTime) Scan(value interface{}) error {
 	rt, ok := value.(time.Time)
 	if ok {
-		*t = NullTime{format(rt), true}
+		*nt = NullTime{format(rt), true}
 	} else {
-		*t = NullTime{time.Time{}, false}
+		*nt = NullTime{time.Time{}, false}
 	}
 	return nil
 }
 
-// satifies the driver.Value interface
-func (t NullTime) Value() (driver.Value, error) {
-	if t.Valid {
-		return t.Time, nil
-	} else {
-		return nil, nil
+// Value satifies the driver.Value interface
+func (nt NullTime) Value() (driver.Value, error) {
+	if nt.Valid {
+		return nt.Time, nil
 	}
+
+	return nil, nil
 }
 
 // Now wrapper around the time.Now() function
