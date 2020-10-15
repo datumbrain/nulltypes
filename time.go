@@ -25,6 +25,27 @@ func Time(Time time.Time) NullTime {
 	return NullTime{Time, true}
 }
 
+// MarshalJSON method is called by json.Marshal,
+// whenever it is of type NullTime
+func (x NullTime) MarshalJSON() ([]byte, error) {
+	if !x.Valid {
+		return []byte("null"), nil
+	}
+	return json.Marshal(x.Time)
+}
+
+// UnmarshalJSON method is called by json.Unmarshal,
+// whenever it is of type NullTime
+func (this *NullTime) UnmarshalJSON(b []byte) error {
+	err := json.Unmarshal(b, &this.Time)
+	if err != nil {
+		return err
+	}
+	this.Time = format(this.Time)
+	this.Valid = true
+	return nil
+}
+
 // satisfy the sql.scanner interface
 func (t *NullTime) Scan(value interface{}) error {
 	rt, ok := value.(time.Time)
@@ -58,25 +79,4 @@ func Date(year int, month time.Month, day, hour, min, sec, nsec int, loc *time.L
 // insure the correct format
 func format(t time.Time) time.Time {
 	return t.In(DatabaseLocation).Truncate(TruncateOff)
-}
-
-// MarshalJSON method is called by json.Marshal,
-// whenever it is of type NullTime
-func (x *NullTime) MarshalJSON() ([]byte, error) {
-	if !x.Valid {
-		return []byte("null"), nil
-	}
-	return json.Marshal(x.Time)
-}
-
-// UnmarshalJSON method is called by json.Unmarshal,
-// whenever it is of type NullTime
-func (this NullTime) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &this.Time)
-	if err != nil {
-		return err
-	}
-	this.Time = format(this.Time)
-	this.Valid = true
-	return nil
 }

@@ -18,7 +18,7 @@ func Int32(Int32 int32) NullInt32 {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullInt32
-func (x *NullInt32) MarshalJSON() ([]byte, error) {
+func (x NullInt32) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
 	}
@@ -27,7 +27,7 @@ func (x *NullInt32) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullInt32
-func (this NullInt32) UnmarshalJSON(b []byte) error {
+func (this *NullInt32) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Int32)
 	if err != nil {
 		return err
