@@ -18,7 +18,7 @@ func Bool(Bool bool) NullBool {
 
 // MarshalJSON method is called by json.Marshal,
 // whenever it is of type NullBool
-func (x *NullBool) MarshalJSON() ([]byte, error) {
+func (x NullBool) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
 	}
@@ -27,7 +27,7 @@ func (x *NullBool) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullBool
-func (this NullBool) UnmarshalJSON(b []byte) error {
+func (this *NullBool) UnmarshalJSON(b []byte) error {
 	err := json.Unmarshal(b, &this.Bool)
 	if err != nil {
 		return err
