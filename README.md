@@ -1,8 +1,6 @@
-# nulltypes
+# nulltypes  [![Build Status](https://travis-ci.org/datumbrain/nulltypes.svg?branch=master)](https://travis-ci.org/datumbrain/nulltypes) [![Go Report Card](https://goreportcard.com/badge/github.com/datumbrain/nulltypes)](https://goreportcard.com/report/github.com/datumbrain/nulltypes) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-<img src="https://github.com/ashleymcnamara/gophers/raw/master/MovingGopher.png" width="120">
-
----
+<img align="right" src="https://github.com/ashleymcnamara/gophers/raw/master/MovingGopher.png" width="120">
 
 `nulltypes` is a golang module that provides an alternative to nullable data types from `database/sql` with proper JSON marshalling and unmarshalling.
 
