@@ -52,7 +52,7 @@ func (nb *NullBool) Scan(value interface{}) error {
 	return nil
 }
 
-// Value satifies the driver.Value interface
+// Value satisfies the driver.Value interface
 func (nb NullBool) Value() (driver.Value, error) {
 	if nb.Valid {
 		return nb.Bool, nil

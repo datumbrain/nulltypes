@@ -52,7 +52,7 @@ func (ni *NullInt64) Scan(value interface{}) error {
 	return nil
 }
 
-// Value satifies the driver.Value interface
+// Value satisfies the driver.Value interface
 func (ni NullInt64) Value() (driver.Value, error) {
 	if ni.Valid {
 		return ni.Int64, nil

@@ -55,7 +55,7 @@ func (ns *NullString) Scan(value interface{}) error {
 	return nil
 }
 
-// Value satifies the driver.Value interface
+// Value satisfies the driver.Value interface
 func (ns NullString) Value() (driver.Value, error) {
 	if ns.Valid {
 		return ns.String, nil

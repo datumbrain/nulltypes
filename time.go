@@ -61,7 +61,7 @@ func (nt *NullTime) Scan(value interface{}) error {
 	return nil
 }
 
-// Value satifies the driver.Value interface
+// Value satisfies the driver.Value interface
 func (nt NullTime) Value() (driver.Value, error) {
 	if nt.Valid {
 		return nt.Time, nil

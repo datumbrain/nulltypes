@@ -52,7 +52,7 @@ func (nf *NullFloat64) Scan(value interface{}) error {
 	return nil
 }
 
-// Value satifies the driver.Value interface
+// Value satisfies the driver.Value interface
 func (nf NullFloat64) Value() (driver.Value, error) {
 	if nf.Valid {
 		return nf.Float64, nil
