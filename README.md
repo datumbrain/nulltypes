@@ -1,8 +1,6 @@
 # nulltypes
 
-<img src="https://github.com/ashleymcnamara/gophers/raw/master/MovingGopher.png" width="120">
-
----
+<img align="right" src="https://github.com/ashleymcnamara/gophers/raw/master/MovingGopher.png" width="120">
 
 `nulltypes` is a golang module that provides an alternative to nullable data types from `database/sql` with proper JSON marshalling and unmarshalling.
 
