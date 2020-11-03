@@ -17,9 +17,9 @@ func Int32(Int32 int32) *NullInt32 {
 }
 
 // Set method to set the value
-func (this *NullInt32) Set(value int32) {
-	this.Int32 = value
-	this.Valid = true
+func (ni *NullInt32) Set(value int32) {
+	ni.Int32 = value
+	ni.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

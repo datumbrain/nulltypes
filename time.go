@@ -26,9 +26,9 @@ func Time(Time time.Time) *NullTime {
 }
 
 // Set method to set the value
-func (this *NullTime) Set(value time.Time) {
-	this.Time = value
-	this.Valid = true
+func (nt *NullTime) Set(value time.Time) {
+	nt.Time = value
+	nt.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

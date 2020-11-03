@@ -17,9 +17,9 @@ func Bool(Bool bool) *NullBool {
 }
 
 // Set method to set the value
-func (this *NullBool) Set(value bool) {
-	this.Bool = value
-	this.Valid = true
+func (nb *NullBool) Set(value bool) {
+	nb.Bool = value
+	nb.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

@@ -17,9 +17,9 @@ func Float64(Float64 float64) *NullFloat64 {
 }
 
 // Set method to set the value
-func (this *NullFloat64) Set(value float64) {
-	this.Float64 = value
-	this.Valid = true
+func (nf *NullFloat64) Set(value float64) {
+	nf.Float64 = value
+	nf.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

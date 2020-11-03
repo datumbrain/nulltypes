@@ -17,9 +17,9 @@ func Int64(Int64 int64) *NullInt64 {
 }
 
 // Set method to set the value
-func (this *NullInt64) Set(value int64) {
-	this.Int64 = value
-	this.Valid = true
+func (ni *NullInt64) Set(value int64) {
+	ni.Int64 = value
+	ni.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

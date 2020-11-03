@@ -17,9 +17,9 @@ func String(String string) *NullString {
 }
 
 // Set method to set the value
-func (this *NullString) Set(value string) {
-	this.String = value
-	this.Valid = true
+func (ns *NullString) Set(value string) {
+	ns.String = value
+	ns.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,
