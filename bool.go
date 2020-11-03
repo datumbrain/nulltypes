@@ -11,9 +11,15 @@ type NullBool struct {
 	Valid bool
 }
 
-// Bool method to get NullBool object from bool
-func Bool(Bool bool) NullBool {
-	return NullBool{Bool, true}
+// Bool method to get a pointer of NullBool object from bool
+func Bool(Bool bool) *NullBool {
+	return &NullBool{Bool, true}
+}
+
+// Set method to set the value
+func (this *NullBool) Set(value bool) {
+	this.Bool = value
+	this.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

@@ -11,12 +11,15 @@ type NullString struct {
 	Valid  bool
 }
 
-// String method to get NullString object from string
-func String(s string) NullString {
-	return NullString{
-		String: s,
-		Valid:  true,
-	}
+// String method to get a pointer of NullString object from string
+func String(String string) *NullString {
+	return &NullString{String, true}
+}
+
+// Set method to set the value
+func (this *NullString) Set(value string) {
+	this.String = value
+	this.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

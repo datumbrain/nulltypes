@@ -11,9 +11,15 @@ type NullInt64 struct {
 	Valid bool
 }
 
-// Int64 method to get NullInt64 object from int64
-func Int64(Int64 int64) NullInt64 {
-	return NullInt64{Int64, true}
+// Int64 method to get a pointer of NullInt64 object from int64
+func Int64(Int64 int64) *NullInt64 {
+	return &NullInt64{Int64, true}
+}
+
+// Set method to set the value
+func (this *NullInt64) Set(value int64) {
+	this.Int64 = value
+	this.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

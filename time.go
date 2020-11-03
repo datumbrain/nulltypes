@@ -20,9 +20,15 @@ type NullTime struct {
 	Valid bool `default:"false"`
 }
 
-// Time method to get NullTime object from time.Time
-func Time(Time time.Time) NullTime {
-	return NullTime{Time, true}
+// Time method to get a pointer of NullTime object from time.Time
+func Time(Time time.Time) *NullTime {
+	return &NullTime{Time, true}
+}
+
+// Set method to set the value
+func (this *NullTime) Set(value time.Time) {
+	this.Time = value
+	this.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,
@@ -71,13 +77,13 @@ func (nt NullTime) Value() (driver.Value, error) {
 }
 
 // Now wrapper around the time.Now() function
-func Now() NullTime {
-	return NullTime{format(time.Now()), true}
+func Now() *NullTime {
+	return &NullTime{format(time.Now()), true}
 }
 
 // Date wrapper around the time.Date() function
-func Date(year int, month time.Month, day, hour, min, sec, nsec int, loc *time.Location) NullTime {
-	return NullTime{format(time.Date(year, month, day, hour, min, sec, nsec, loc)), true}
+func Date(year int, month time.Month, day, hour, min, sec, nsec int, loc *time.Location) *NullTime {
+	return &NullTime{format(time.Date(year, month, day, hour, min, sec, nsec, loc)), true}
 }
 
 // insure the correct format

@@ -11,9 +11,15 @@ type NullInt32 struct {
 	Valid bool
 }
 
-// Int32 method to get NullInt32 object from int32
-func Int32(Int32 int32) NullInt32 {
-	return NullInt32{Int32, true}
+// Int32 method to get a pointer of NullInt32 object from int32
+func Int32(Int32 int32) *NullInt32 {
+	return &NullInt32{Int32, true}
+}
+
+// Set method to set the value
+func (this *NullInt32) Set(value int32) {
+	this.Int32 = value
+	this.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,

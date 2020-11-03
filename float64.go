@@ -11,9 +11,15 @@ type NullFloat64 struct {
 	Valid   bool
 }
 
-// Float64 method to get NullFloat64 object from float64
-func Float64(Float64 float64) NullFloat64 {
-	return NullFloat64{Float64, true}
+// Float64 method to get a pointer of NullFloat64 object from float64
+func Float64(Float64 float64) *NullFloat64 {
+	return &NullFloat64{Float64, true}
+}
+
+// Set method to set the value
+func (this *NullFloat64) Set(value float64) {
+	this.Float64 = value
+	this.Valid = true
 }
 
 // MarshalJSON method is called by json.Marshal,
