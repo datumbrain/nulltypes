@@ -54,7 +54,7 @@ func (nt *NullTime) UnmarshalJSON(b []byte) error {
 func (nt *NullTime) Scan(value interface{}) error {
 	rt, ok := value.(time.Time)
 	if ok {
-		*nt = NullTime{format(rt), true}
+		*nt = NullTime{ToDatabaseFormat(rt), true}
 	} else {
 		*nt = NullTime{time.Time{}, false}
 	}
@@ -72,15 +72,15 @@ func (nt NullTime) Value() (driver.Value, error) {
 
 // Now wrapper around the time.Now() function
 func Now() NullTime {
-	return NullTime{format(time.Now()), true}
+	return NullTime{ToDatabaseFormat(time.Now()), true}
 }
 
 // Date wrapper around the time.Date() function
 func Date(year int, month time.Month, day, hour, min, sec, nsec int, loc *time.Location) NullTime {
-	return NullTime{format(time.Date(year, month, day, hour, min, sec, nsec, loc)), true}
+	return NullTime{ToDatabaseFormat(time.Date(year, month, day, hour, min, sec, nsec, loc)), true}
 }
 
-// insure the correct format
-func format(t time.Time) time.Time {
+// insure the correct ToDatabaseFormat
+func ToDatabaseFormat(t time.Time) time.Time {
 	return t.In(DatabaseLocation).Truncate(TruncateOff)
 }

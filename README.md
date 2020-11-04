@@ -26,13 +26,13 @@ Here is an example usage with _GORM_.
 package models
 
 type User struct {
-	ID              uint `gorm:"primary_key"`
-	Name            string
-	Address         nulltypes.NullString
-	CreationDate    time.Time `gorm:"autoCreateTime;default:current_timestamp"`
-	UpdationDate    nulltypes.NullTime
-	TerminationDate nulltypes.NullTime
-	ManagerID       nulltypes.NullInt64 `gorm:"OnUpdate:CASCADE,OnDelete:SET NULL"`
+	ID              uint                 `json:"id" gorm:"primary_key"`
+	Name            string               `json:"name"`
+	Address         nulltypes.NullString `json:"address,omitempty"`
+	CreationDate    time.Time            `json:"-" gorm:"autoCreateTime:milli;default:current_timestamp"`
+	UpdationDate    nulltypes.NullTime   `json:"-" gorm:"autoUpdateTime:milli"` 
+	TerminationDate nulltypes.NullTime   `json:"termination_date,omitempty"`
+	ManagerID       nulltypes.NullInt64  `json:"manager_id,omitempty" gorm:"OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 ```
 
