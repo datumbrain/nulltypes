@@ -50,4 +50,5 @@ user := User{
 ## Author
 
 [Faizan Khalid](https://github.com/iamfaizankhalid)
+
 [Fahad Siddiqui](https://github.com/fahadsiddiqui)
