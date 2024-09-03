@@ -3,6 +3,7 @@ package nulltypes
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"fmt"
 )
 
 // NullString is a wrapper around string
@@ -23,7 +24,8 @@ func String(s string) NullString {
 // whenever it is of type NullString
 func (ns NullString) MarshalJSON() ([]byte, error) {
 	if !ns.Valid {
-		return json.Marshal(nil)
+		// Return nil to ensure the field is omitted
+		return []byte("null"), nil
 	}
 	return json.Marshal(ns.String)
 }
@@ -31,31 +33,34 @@ func (ns NullString) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON method is called by json.Unmarshal,
 // whenever it is of type NullString
 func (ns *NullString) UnmarshalJSON(b []byte) error {
-	var s *string
+	if string(b) == "null" {
+		ns.Valid = false
+		ns.String = ""
+		return nil
+	}
+	var s string
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	if s != nil {
-		ns.Valid = true
-		ns.String = *s
-	} else {
-		ns.Valid = false
-	}
+	ns.Valid = true
+	ns.String = s
 	return nil
 }
 
-// Scan satisfies the sql.scanner interface
+// Scan satisfies the sql.Scanner interface
 func (ns *NullString) Scan(value interface{}) error {
-	rt, ok := value.(string)
-	if ok {
-		*ns = NullString{rt, true}
-	} else {
+	switch v := value.(type) {
+	case string:
+		*ns = NullString{v, true}
+	case nil:
 		*ns = NullString{"", false}
+	default:
+		return fmt.Errorf("unable to scan type %T into NullString", value)
 	}
 	return nil
 }
 
-// Value satisfies the driver.Value interface
+// Value satisfies the driver.Valuer interface
 func (ns NullString) Value() (driver.Value, error) {
 	if ns.Valid {
 		return ns.String, nil
